@@ -15,6 +15,12 @@ class Router
         $this->routes[] = ['method' => 'GET', 'pattern' => $pattern, 'handler' => $handler];
     }
 
+    // Enregistre une route POST
+    public function post(string $pattern, callable $handler): void
+    {
+        $this->routes[] = ['method' => 'POST', 'pattern' => $pattern, 'handler' => $handler];
+    }
+    
     // Trouve la route qui correspond et l'exécute
     public function dispatch(string $method, string $path): void
     {

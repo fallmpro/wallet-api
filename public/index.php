@@ -54,4 +54,26 @@ $router->get('#^/wallets/(\d+)/owner$#', function (string $id) use ($wallets) {
         echo json_encode(['error' => "Owner $id introuvable"]);
     }
 });
+
+$router->post('#^/wallets$#', function () {
+    $data = json_decode(file_get_contents('php://input'), true);
+
+    // 1. Validation d'abord : si owner manque, on s'arrête tout de suite
+    if (!isset($data['owner'])) {
+        http_response_code(400);
+        echo json_encode(['error' => 'Champ owner requis']);
+        return; // on sort de la fonction : le wallet n'est jamais créé
+    }
+
+    // 2. Ici, on est sûr que owner existe
+    $wallet = [
+        'id' => 4,
+        'owner' => $data['owner'],
+        'balance' => 0,
+    ];
+
+    http_response_code(201);
+    echo json_encode($wallet);
+});
+
 $router->dispatch($method, $path); // toujours en dernier
